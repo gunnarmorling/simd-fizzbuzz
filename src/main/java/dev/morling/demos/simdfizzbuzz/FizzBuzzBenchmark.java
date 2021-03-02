@@ -34,7 +34,7 @@ public class FizzBuzzBenchmark {
 
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
-    public void fizzBuzz(MyState state, Blackhole blackhole) {
+    public void serialFizzBuzz(MyState state, Blackhole blackhole) {
         blackhole.consume(state.fizzBuzz.serialFizzBuzz(state.values));
     }
 
