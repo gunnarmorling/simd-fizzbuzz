@@ -1,7 +1,7 @@
 # SIMD FizzBuzz
 
 A simple demo for using SIMD instructions (single instruction, multiple data) with the Vector API of Java 16
-(https://openjdk.java.net/jeps/338).
+([JEP 338](https://openjdk.java.net/jeps/338)).
 
 ## Build
 
@@ -16,7 +16,7 @@ mvn clean verify
 Then a JMH benchmark can be executed which compares sequential/scalar and vectorized FizzBuzz performance:
 
 ```shell
-java --add-modules=jdk.incubator.vector -jar target/benchmarks.jar -f 1 -wi 3 -i 5
+java --add-modules=jdk.incubator.vector -jar target/benchmarks.jar -f 1 -wi 5 -i 5
 ```
 
 ## License
