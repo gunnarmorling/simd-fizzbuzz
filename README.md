@@ -25,7 +25,7 @@ Here are the benchmark results from my Macbook Pro 2019 (2.6 GHz 6-Core Intel Co
 
 ```shell
 Benchmark                                         Mode  Cnt        Score        Error  Units
-FizzBuzzBenchmark.simdFizzBuzz                   thrpt    5  2198658,082 ±  32523,831  ops/s
+FizzBuzzBenchmark.sequentialFizzBuzz             thrpt    5  2198658,082 ±  32523,831  ops/s
 FizzBuzzBenchmark.simdFizzBuzz                   thrpt    5  6746226,066 ±  98166,843  ops/s
 FizzBuzzBenchmark.simdFizzBuzzMasked             thrpt    5  1426288,420 ±  24829,082  ops/s
 FizzBuzzBenchmark.simdFizzBuzzMasksInArray       thrpt    5  6661179,945 ±  84589,369  ops/s
