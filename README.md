@@ -21,7 +21,7 @@ java --add-modules=jdk.incubator.vector -jar target/benchmarks.jar -f 1 -wi 5 -i
 
 ## Benchmark Results
 
-Here are the benchmark results from my Macbook Pro 2019 (2.6 GHz 6-Core Intel Core i7):
+Here are the benchmark results from running on a Macbook Pro 2019 (2.6 GHz 6-Core Intel Core i7):
 
 ```shell
 Benchmark                                        (arrayLength)   Mode  Cnt        Score        Error  Units
@@ -31,9 +31,23 @@ FizzBuzzBenchmark.simdFizzBuzz                             256  thrpt    5  6748
 FizzBuzzBenchmark.simdFizzBuzzMasked                       256  thrpt    5  1204128,029 ±   5556,553  ops/s
 FizzBuzzBenchmark.simdFizzBuzzMasksInArray                 256  thrpt    5  6717976,769 ± 127111,649  ops/s
 FizzBuzzBenchmark.simdFizzBuzzSeparateMaskIndex            256  thrpt    5  8830433,250 ±  69955,161  ops/s
-````
+```
 
 The fastest SIMD implementation is about 4x faster than the basic sequential one.
+
+And these are the numbers from running on a Mac Mini 2020 (M1, i.e. AArch64):
+
+```shell
+Benchmark                                        (arrayLength)   Mode  Cnt        Score       Error  Units
+FizzBuzzBenchmark.sequentialFizzBuzz                       256  thrpt    5  2717990,097 ±  4203,628  ops/s
+FizzBuzzBenchmark.sequentialFizzBuzzMasked                 256  thrpt    5  5750402,582 ±  2479,462  ops/s
+FizzBuzzBenchmark.simdFizzBuzz                             256  thrpt    5  1297631,404 ± 15613,288  ops/s
+FizzBuzzBenchmark.simdFizzBuzzMasked                       256  thrpt    5   374313,033 ±  2219,940  ops/s
+FizzBuzzBenchmark.simdFizzBuzzMasksInArray                 256  thrpt    5  1316375,073 ±  1178,704  ops/s
+FizzBuzzBenchmark.simdFizzBuzzSeparateMaskIndex            256  thrpt    5   998979,324 ± 69997,361  ops/s
+```
+
+The sequential implementation does a fair bit better, SIMD seems not to be supported yet as per those numbers.
 
 ## License
 
