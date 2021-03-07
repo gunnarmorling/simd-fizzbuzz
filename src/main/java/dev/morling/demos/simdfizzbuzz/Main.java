@@ -27,7 +27,7 @@ public class Main {
         var values = IntStream.range(1, 257).toArray();
 
         for(int i = 0; i < 5_000_000; i++) {
-            blackhole = fizzBuzz.simdFizzBuzzSeparateMaskIndex(values);
+            blackhole = fizzBuzz.simdFizzBuzz(values);
         }
     }
 }

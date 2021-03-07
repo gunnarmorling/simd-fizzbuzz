@@ -25,11 +25,19 @@ import jdk.incubator.vector.VectorSpecies;
 
 public class FizzBuzz {
 
+    private static final int FIZZ = -1;
+    private static final int BUZZ = -2;
+    private static final int FIZZ_BUZZ = -3;
+
     private static final VectorSpecies<Integer> SPECIES = IntVector.SPECIES_256;
 
     private final VectorMask[] resultMasksArray = new VectorMask[15];
     private final List<VectorMask<Integer>> resultMasks = new ArrayList<>(15);
     private final IntVector[] resultValues = new IntVector[15];
+
+    private int[] serialMask = new int[] {0, 0, -1, 0, -2,
+                                          -1, 0, 0, -1, -10,
+                                          0, -1, 0, 0, -3};
 
     public FizzBuzz() {
         List<VectorMask<Integer>> threeMasks = Arrays.asList(
@@ -52,7 +60,7 @@ public class FizzBuzz {
 
             resultMasksArray[i] = tm.or(fm);
             resultMasks.add(tm.or(fm));
-            resultValues[i] = IntVector.zero(SPECIES).blend(-1, tm).blend(-2, fm).blend(-3, tm.and(fm));
+            resultValues[i] = IntVector.zero(SPECIES).blend(FIZZ, tm).blend(BUZZ, fm).blend(FIZZ_BUZZ, tm.and(fm));
         }
     }
 
@@ -63,17 +71,34 @@ public class FizzBuzz {
             int value = values[i];
             if (value % 3 == 0) {
                 if (value % 5 == 0) {
-                    result[i] = -3;
+                    result[i] = FIZZ_BUZZ;
                 }
                 else {
-                    result[i] = -1;
+                    result[i] = FIZZ;
                 }
             }
             else if (value % 5 == 0) {
-                result[i] = -2;
+                result[i] = BUZZ;
             }
             else {
                 result[i] = value;
+            }
+        }
+
+        return result;
+    }
+
+    public int[] serialFizzBuzzMasked(int[] values) {
+        int[] result = new int[values.length];
+        int j = 0;
+
+        for (int i = 0; i < values.length; i++) {
+            int res = serialMask[j];
+            result[i] = res == 0 ? values[i] : res;
+
+            j++;
+            if (j == 15) {
+                j = 0;
             }
         }
 
@@ -96,14 +121,14 @@ public class FizzBuzz {
             int value = values[i];
             if (value % 3 == 0) {
                 if (value % 5 == 0) {
-                    result[i] = -3;
+                    result[i] = FIZZ_BUZZ;
                 }
                 else {
-                    result[i] = -1;
+                    result[i] = FIZZ;
                 }
             }
             else if (value % 5 == 0) {
-                result[i] = -2;
+                result[i] = BUZZ;
             }
             else {
                 result[i] = value;
@@ -129,14 +154,14 @@ public class FizzBuzz {
             int value = values[i];
             if (value % 3 == 0) {
                 if (value % 5 == 0) {
-                    result[i] = -3;
+                    result[i] = FIZZ_BUZZ;
                 }
                 else {
-                    result[i] = -1;
+                    result[i] = FIZZ;
                 }
             }
             else if (value % 5 == 0) {
-                result[i] = -2;
+                result[i] = BUZZ;
             }
             else {
                 result[i] = value;
@@ -166,14 +191,14 @@ public class FizzBuzz {
             int value = values[i];
             if (value % 3 == 0) {
                 if (value % 5 == 0) {
-                    result[i] = -3;
+                    result[i] = FIZZ_BUZZ;
                 }
                 else {
-                    result[i] = -1;
+                    result[i] = FIZZ;
                 }
             }
             else if (value % 5 == 0) {
-                result[i] = -2;
+                result[i] = BUZZ;
             }
             else {
                 result[i] = value;
@@ -188,10 +213,10 @@ public class FizzBuzz {
         int j = 0;
 
         for (int i = 0; i < values.length; i += SPECIES.length()) {
-            var m = SPECIES.indexInRange(i, values.length);
-            var va = IntVector.fromArray(SPECIES, values, i, m);
-            var fizzbuzz = va.blend(resultValues[j], resultMasks.get(j));
-            fizzbuzz.intoArray(result, i, m);
+            var mask = SPECIES.indexInRange(i, values.length);
+            var chunk = IntVector.fromArray(SPECIES, values, i, mask);
+            var fizzBuzz = chunk.blend(resultValues[j], resultMasks.get(j));
+            fizzBuzz.intoArray(result, i, mask);
 
             j++;
             if (j == 15) {
