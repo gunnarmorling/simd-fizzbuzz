@@ -36,7 +36,7 @@ public class FizzBuzz {
     private final IntVector[] resultValues = new IntVector[15];
 
     private int[] serialMask = new int[] {0, 0, -1, 0, -2,
-                                          -1, 0, 0, -1, -10,
+                                          -1, 0, 0, -1, -2,
                                           0, -1, 0, 0, -3};
 
     public FizzBuzz() {
