@@ -21,7 +21,9 @@ java --add-modules=jdk.incubator.vector -jar target/benchmarks.jar -f 1 -wi 5 -i
 
 ## Benchmark Results
 
-Here are the benchmark results from running on a Macbook Pro 2019 (2.6 GHz 6-Core Intel Core i7):
+All tests were run using OpenJDK 16 build 16+36.
+
+Here are the benchmark results from running on a Macbook Pro 2019 (2.6 GHz 6-Core Intel Core i7), using the [upstream build](https://jdk.java.net/16/):
 
 ```shell
 Benchmark                                        (arrayLength)   Mode  Cnt        Score        Error  Units
@@ -35,7 +37,7 @@ FizzBuzzBenchmark.simdFizzBuzzSeparateMaskIndex            256  thrpt    5  8830
 
 The fastest SIMD implementation is about 4x faster than the basic sequential one.
 
-And these are the numbers from running on a Mac Mini 2020 (M1, i.e. AArch64):
+And these are the numbers from running on a Mac Mini 2020 (M1, i.e. AArch64), using the [Azul Zulu build](https://www.azul.com/downloads/zulu-community/?version=java-16-ea&os=macos&architecture=arm-64-bit&package=jdk):
 
 ```shell
 Benchmark                                        (arrayLength)   Mode  Cnt        Score       Error  Units
@@ -47,7 +49,21 @@ FizzBuzzBenchmark.simdFizzBuzzMasksInArray                 256  thrpt    5  1316
 FizzBuzzBenchmark.simdFizzBuzzSeparateMaskIndex            256  thrpt    5   998979,324 ± 69997,361  ops/s
 ```
 
-The sequential implementation does a fair bit better, SIMD seems not to be supported yet as per those numbers.
+The scalar implementation does a fair bit better, SIMD seems not to be supported yet as per those numbers.
+
+Lastly, numbers from an AWS c6g.xlarge instance (AArch64, Linux), using the [upstream build](https://jdk.java.net/16/):
+
+```shell
+Benchmark                                        (arrayLength)   Mode  Cnt        Score      Error  Units
+FizzBuzzBenchmark.scalarFizzBuzz                           256  thrpt    5  1083917.956 ± 1007.316  ops/s
+FizzBuzzBenchmark.scalarFizzBuzzMasked                     256  thrpt    5  2201814.020 ± 2960.114  ops/s
+FizzBuzzBenchmark.simdFizzBuzz                             256  thrpt    5   468282.908 ±  449.951  ops/s
+FizzBuzzBenchmark.simdFizzBuzzMasked                       256  thrpt    5   147330.900 ±   48.854  ops/s
+FizzBuzzBenchmark.simdFizzBuzzMasksInArray                 256  thrpt    5   476750.622 ±  223.152  ops/s
+FizzBuzzBenchmark.simdFizzBuzzSeparateMaskIndex            256  thrpt    5   486352.294 ±   97.117  ops/s
+```
+
+Again, it seems the Vector API doesn't support yet AArch64 yet (or perhaps it's just the `blend()` method)?
 
 ## License
 
