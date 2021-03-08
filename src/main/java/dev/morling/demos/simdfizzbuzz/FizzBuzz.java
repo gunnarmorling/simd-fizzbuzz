@@ -34,6 +34,7 @@ public class FizzBuzz {
     private final VectorMask[] resultMasksArray = new VectorMask[15];
     private final List<VectorMask<Integer>> resultMasks = new ArrayList<>(15);
     private final IntVector[] resultValues = new IntVector[15];
+    private final IntVector[] resultValuesMin = new IntVector[15];
 
     private int[] serialMask = new int[] {0, 0, -1, 0, -2,
                                           -1, 0, 0, -1, -2,
@@ -61,6 +62,7 @@ public class FizzBuzz {
             resultMasksArray[i] = tm.or(fm);
             resultMasks.add(tm.or(fm));
             resultValues[i] = IntVector.zero(SPECIES).blend(FIZZ, tm).blend(BUZZ, fm).blend(FIZZ_BUZZ, tm.and(fm));
+            resultValuesMin[i] = IntVector.broadcast(SPECIES, Integer.MAX_VALUE).blend(FIZZ, tm).blend(BUZZ, fm).blend(FIZZ_BUZZ, tm.and(fm));
         }
     }
 
@@ -180,6 +182,43 @@ public class FizzBuzz {
         for (; i < upperBound; i += SPECIES.length()) {
             var va = IntVector.fromArray(SPECIES, values, i);
             var fizzbuzz = va.blend(resultValues[j], resultMasksArray[j]);
+            fizzbuzz.intoArray(result, i);
+            j++;
+            if (j == 15) {
+                j = 0;
+            }
+        }
+
+        for (; i < values.length; i++) {
+            int value = values[i];
+            if (value % 3 == 0) {
+                if (value % 5 == 0) {
+                    result[i] = FIZZ_BUZZ;
+                }
+                else {
+                    result[i] = FIZZ;
+                }
+            }
+            else if (value % 5 == 0) {
+                result[i] = BUZZ;
+            }
+            else {
+                result[i] = value;
+            }
+        }
+
+        return result;
+    }
+
+    public int[] simdFizzBuzzSeparateMaskIndexMin(int[] values) {
+        int[] result = new int[values.length];
+        int i = 0;
+        int j = 0;
+
+        int upperBound = SPECIES.loopBound(values.length);
+        for (; i < upperBound; i += SPECIES.length()) {
+            var va = IntVector.fromArray(SPECIES, values, i);
+            var fizzbuzz = va.min(resultValuesMin[j]);
             fizzbuzz.intoArray(result, i);
             j++;
             if (j == 15) {

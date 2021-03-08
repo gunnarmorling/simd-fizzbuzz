@@ -76,6 +76,14 @@ public class FizzBuzzTest {
     }
 
     @Test
+    public void simdFizzBuzzSeparateMaskIndexMin() {
+        var values = IntStream.range(1, 101).toArray();
+        var result = new FizzBuzz().simdFizzBuzzSeparateMaskIndexMin(values);
+
+        assertThat(result).isEqualTo(FIZZ_BUZZ_1_TO_100);
+    }
+
+    @Test
     public void simdFizzBuzzMasked() {
         var values = IntStream.range(1, 101).toArray();
         var result = new FizzBuzz().simdFizzBuzzMasked(values);

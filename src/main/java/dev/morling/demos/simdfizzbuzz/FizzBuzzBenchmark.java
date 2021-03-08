@@ -45,8 +45,8 @@ public class FizzBuzzBenchmark {
         }
     }
 
-    @Benchmark
-    @BenchmarkMode(Mode.Throughput)
+//    @Benchmark
+//    @BenchmarkMode(Mode.Throughput)
     public void scalarFizzBuzz(MyState state, Blackhole blackhole) {
         blackhole.consume(state.fizzBuzz.serialFizzBuzz(state.values));
     }
@@ -57,14 +57,14 @@ public class FizzBuzzBenchmark {
         blackhole.consume(state.fizzBuzz.serialFizzBuzzMasked(state.values));
     }
 
-    @Benchmark
-    @BenchmarkMode(Mode.Throughput)
+//    @Benchmark
+//    @BenchmarkMode(Mode.Throughput)
     public void simdFizzBuzz(MyState state, Blackhole blackhole) {
         blackhole.consume(state.fizzBuzz.simdFizzBuzz(state.values));
     }
 
-    @Benchmark
-    @BenchmarkMode(Mode.Throughput)
+//    @Benchmark
+//    @BenchmarkMode(Mode.Throughput)
     public void simdFizzBuzzMasksInArray(MyState state, Blackhole blackhole) {
         blackhole.consume(state.fizzBuzz.simdFizzBuzzMasksInArray(state.values));
     }
@@ -77,6 +77,12 @@ public class FizzBuzzBenchmark {
 
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
+    public void simdFizzBuzzSeparateMaskIndexMin(MyState state, Blackhole blackhole) {
+        blackhole.consume(state.fizzBuzz.simdFizzBuzzSeparateMaskIndexMin(state.values));
+    }
+
+//    @Benchmark
+//    @BenchmarkMode(Mode.Throughput)
     public void simdFizzBuzzMasked(MyState state, Blackhole blackhole) {
         blackhole.consume(state.fizzBuzz.simdFizzBuzzMasked(state.values));
     }
