@@ -47,13 +47,13 @@ public class FizzBuzzBenchmark {
 
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
-    public void sequentialFizzBuzz(MyState state, Blackhole blackhole) {
+    public void scalarFizzBuzz(MyState state, Blackhole blackhole) {
         blackhole.consume(state.fizzBuzz.serialFizzBuzz(state.values));
     }
 
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
-    public void sequentialFizzBuzzMasked(MyState state, Blackhole blackhole) {
+    public void scalarFizzBuzzMasked(MyState state, Blackhole blackhole) {
         blackhole.consume(state.fizzBuzz.serialFizzBuzzMasked(state.values));
     }
 
