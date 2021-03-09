@@ -49,7 +49,7 @@ FizzBuzzBenchmark.simdFizzBuzzMasksInArray                 256  thrpt    5  1316
 FizzBuzzBenchmark.simdFizzBuzzSeparateMaskIndex            256  thrpt    5   998979,324 ± 69997,361  ops/s
 ```
 
-The scalar implementation does a fair bit better, SIMD seems not to be supported yet as per those numbers.
+The scalar implementation does a fair bit better; the SIMD implementation is falling back to software, as the AArch64 NEON instruction set only supports a maximum vector length of 128 Bit, while the benchmark uses 256 Bit explicitly.
 
 Lastly, numbers from an AWS c6g.xlarge instance (AArch64, Linux), using the [upstream build](https://jdk.java.net/16/):
 
@@ -63,7 +63,7 @@ FizzBuzzBenchmark.simdFizzBuzzMasksInArray                 256  thrpt    5   476
 FizzBuzzBenchmark.simdFizzBuzzSeparateMaskIndex            256  thrpt    5   486352.294 ±   97.117  ops/s
 ```
 
-Again, it seems the Vector API doesn't support yet AArch64 yet (or perhaps it's just the `blend()` method)?
+Again, the poor "SIMD" numbers are due to this not being intrinsified to actual hardware instructions.
 
 ## License
 
