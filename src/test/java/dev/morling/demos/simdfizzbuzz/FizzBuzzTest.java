@@ -52,6 +52,14 @@ public class FizzBuzzTest {
     }
 
     @Test
+    public void serialFizzBuzzGenerate() {
+        var values = IntStream.range(1, 101).toArray();
+        var result = new FizzBuzz().serialFizzBuzzGenerate(values);
+
+        assertThat(result).isEqualTo(FIZZ_BUZZ_1_TO_100);
+    }
+
+    @Test
     public void simdFizzBuzz() {
         var values = IntStream.range(1, 101).toArray();
         var result = new FizzBuzz().simdFizzBuzz(values);

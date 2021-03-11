@@ -105,6 +105,17 @@ public class FizzBuzz {
         return result;
     }
 
+    public int[] serialFizzBuzzGenerate(int[] values) {
+        int[] result = new int[values.length];
+
+        for (int i = 0; i < result.length; i++) result[i] = i+1;
+        for (int i = 2; i < result.length; i+=3) result[i] = FIZZ;
+        for (int i = 4; i < result.length; i+=5) result[i] = BUZZ;
+        for (int i = 14; i < result.length; i+=15) result[i] = FIZZ_BUZZ;
+
+        return result;
+    }
+
     public int[] simdFizzBuzz(int[] values) {
         int[] result = new int[values.length];
         int i = 0;

@@ -59,6 +59,12 @@ public class FizzBuzzBenchmark {
 
     @Benchmark
     @BenchmarkMode(Mode.Throughput)
+    public void scalarFizzBuzzGenerate(MyState state, Blackhole blackhole) {
+        blackhole.consume(state.fizzBuzz.serialFizzBuzzGenerate(state.values));
+    }
+
+    @Benchmark
+    @BenchmarkMode(Mode.Throughput)
     public void simdFizzBuzz(MyState state, Blackhole blackhole) {
         blackhole.consume(state.fizzBuzz.simdFizzBuzz(state.values));
     }
